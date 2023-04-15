@@ -1,5 +1,6 @@
 from steam.client import SteamClient
 import requests
+import logging
 # from threading import Thread
 from os import environ
 
@@ -19,7 +20,7 @@ def getUpdate():
 
 def sendMessage(text, id):
     requests.get(f"https://api.telegram.org/bot{token}/sendMessage?chat_id={id}&text=" + text, timeout=3)
-    
+
 # def boost():
 #     client.games_played(oyunID)
 #     client.run_forever()
@@ -28,14 +29,16 @@ date_list = []
 while 1:
     try:
         id, text, date = getUpdate()
-    
+
         if text == "/config" and date not in date_list:
+            logging.info('/config received')
             date_list.append(date)
             sendMessage("Please enter your username and password with a colon between them.\n\nExample: kralali01:31mizAh31", id)
             while 1:
                 id, text, date = getUpdate()
                 gecici = text
                 if ":" in text:
+                    logging.info('Message with : received')
                     sendMessage(f"{text}  -->  Is the username and password correct? (If yes, type 'yes', if not, press 'enter')", id)
                     while 1:
                         id, text, date = getUpdate()
@@ -67,14 +70,14 @@ while 1:
                         elif text!= gecici and text != "yes" and text != "Yes":
                             date_list.append(date)
                             sendMessage("Settings were not saved.", id)
-                            break    
+                            break
                     break
                 elif text != "/config" and ":" not in text and date not in date_list:
                     date_list.append(date)
                     sendMessage("Please enter your username and password with a colon between them.\n\nExample: kralali01:31mizAh31", id)
                     break
-                
-        elif text == "/run" and date not in date_list:    
+
+        elif text == "/run" and date not in date_list:
             date_list.append(date)
             try:
                 with open("config", "r", encoding="UTF-8") as file:
@@ -125,18 +128,18 @@ while 1:
                     client.games_played(oyunID)
                     client.run_forever()
                 else:
-                    sendMessage("Hata: " + str(account_login), id)        
+                    sendMessage("Hata: " + str(account_login), id)
             except FileNotFoundError:
-                sendMessage("Enter your username and password by using the '/config' command.", id)  
+                sendMessage("Enter your username and password by using the '/config' command.", id)
 
         elif text == "/start" and date not in date_list:
             date_list.append(date)
             sendMessage("Hello,\nThis bot increases the hours played of games on Steam.\nType '/help' to learn how to use it.", id)
-        
+
         elif text == "/help" and date not in date_list:
             date_list.append(date)
             sendMessage("/config --> Saves your Steam username, password, and the games you want to increase hours played.\n\n/run --> Begins the process of increasing hours played.", id)
-        
+
         elif text != "/config" and text != "/run" and text != "/start" and text != "/help" and date not in date_list:
             date_list.append(date)
             sendMessage("I did not understand what you wrote.\n\nType '/help' to see the commands.", id)

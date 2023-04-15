@@ -17,6 +17,6 @@ python3 bot.py
 
 ### Heroku
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fumixia/Steam-HourBoosterr)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fumixia/Steam-HourBooster)
 
 My Steam Profile: https://steamcommunity.com/id/tingirifistik/
